@@ -122,7 +122,7 @@ public class AdjacencyGraph {
         }
     }
 
-    //This method adds up the weights of all the usedEdges part of our final minimum spanning tree.
+    //I Made this to test why we cant write <= 0.
     void tester(ArrayList<Edge> usedEdges) {
         Edge lastElement = usedEdges.get(usedEdges.size()-1);
         for (int i = 0; usedEdges.get(i).compareTo(lastElement)== -1;i++) {
@@ -131,7 +131,7 @@ public class AdjacencyGraph {
         System.out.println(lastElement);
     }
 
-    // This method returns the sum of the weights of all edges in usedEdges.
+    //This method adds up the weights of all the usedEdges part of our final minimum spanning tree.
     int findTotalCost(ArrayList<Edge> usedEdges) {
         int cost = 0;
         for (int i = 0; usedEdges.get(i).compareTo(usedEdges.get(usedEdges.size()-1)) == -1; i++){
