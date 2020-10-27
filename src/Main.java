@@ -1,13 +1,18 @@
 public class Main {
 
     public static void main(String[] args) {
+        //We initialize the AdjacencyGraph, whereafter we use the following method to add the cities
         AdjacencyGraph grid = new AdjacencyGraph();
         addCities(grid);
         grid.printGraph();
+        //We run our Prims Minimum Spanning Tree algorithm
         grid.MSTPrims();
 
     }
+    //This method simply adds the cities to the grid
     public static void addCities(AdjacencyGraph grid){
+        //First by initializing all the vertices - this is not completely necessary,
+        // these could be initalized later, but this makes it cleaner
         Vertex Eskildstrup = new Vertex("Eskildstrup");
         Vertex Haslev = new Vertex("Haslev");
         Vertex Holbaek = new Vertex("Holbaek");
@@ -25,6 +30,7 @@ public class Main {
         Vertex Soroe = new Vertex("Soroe");
         Vertex Vordingborg = new Vertex("Vordingborg");
 
+        //The cities are now added to the grid, this is done using addVertex from the AdjacencyGraph class
         grid.addVertex(Eskildstrup);
         grid.addVertex(Haslev);
         grid.addVertex(Holbaek);
@@ -42,6 +48,7 @@ public class Main {
         grid.addVertex(Soroe);
         grid.addVertex(Vordingborg);
 
+        //The connections between the cities are now added using addEdge from the AdjacencyGraph class
         grid.addEdge(Eskildstrup, Maribo, 28);
         grid.addEdge(Eskildstrup, NykoebingF, 13);
         grid.addEdge(Eskildstrup, Vordingborg, 24);

@@ -1,20 +1,23 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.PriorityQueue;
 
 public class AdjacencyGraph {
+    //We initialize the vertices
     ArrayList<Vertex> vertices;
 
+    //In the constructor we add the new vertices to our Arraylist
     public AdjacencyGraph() {
         vertices = new ArrayList<Vertex>();
     }
 
+    //Adds a Vertex to the vertices ArrayList
     public void addVertex(Vertex vertex) {
         vertices.add(vertex);
     }
 
+    //Adds an Edge to the Vertex
     public void addEdge(Vertex from, Vertex to, Integer distance) {
+        //We check if the ArrayList contains
         if (!(vertices.contains(from) && vertices.contains(to))) {
             System.out.println("Vertex is not in graph");
             return;
@@ -43,31 +46,6 @@ public class AdjacencyGraph {
         return false;
     }
 
-    /*public void MSTPrims(){
-        Vertex startingPoint = vertices.get(0);
-        int[] Distance = new int[vertices.size()];
-         PriorityQueue<Vertex> Q = new PriorityQueue<Vertex>();
-         ArrayList<Vertex> Predecessor = new ArrayList<Vertex>();
-         Arrays.fill(Distance, Integer.MAX_VALUE);
-         if (vertices.size() > 0){
-             Distance[0] = 0;
-             Q.offer(startingPoint);
-         }
-         int counter = 0;
-         int MST = 0;
-         while (!Q.isEmpty() && counter < vertices.size()){
-             Vertex smallest = Q.poll();
-             for (Edge edge : smallest.OutEdges){
-                if (edge.weight < Distance[smallest.distance]){
-
-                }
-             }
-         }
-
-
-    }
-
-     */
     public void MSTPrims() {
         ArrayList<Vertex> visitedVertices = new ArrayList<>();
         ArrayList<Edge> visitedEdges = new ArrayList<Edge>();
@@ -75,8 +53,6 @@ public class AdjacencyGraph {
         Vertex startingPoint = vertices.get(0);
         visitedVertices.add(startingPoint);
         int cost = 0;
-
-        Edge shortestEdge = visitedVertices.get(0).OutEdges.get(0);
 
         // find alle edges
         for (Vertex vertex: visitedVertices) // går igennem alle vertices
@@ -106,21 +82,7 @@ public class AdjacencyGraph {
 
         System.out.println(cost);
         printMST(visitedVertices, usedEdges, cost);
-        /*for (int i = 0; visitedVertices.size() <= vertices.size(); i++) {
-            for (int j = 0; j < visitedVertices.get(i).OutEdges.size(); j++) {
-                Edge edge = visitedVertices.get(i).OutEdges.get(j);
-                if (!visitedEdge.contains(edge)) {
-                    visitedEdge.add(edge);
-                }
-            }
-            Collections.sort(visitedEdge);
-            Edge smallestEdge = visitedEdge.get(0);
-            if (!visitedVertices.contains(smallestEdge.to)) {
-                visitedVertices.add(smallestEdge.to);
-            }
-        }*/
-        //System.out.println(visitedVertices);
-        //System.out.println(visitedEdge);
+
     }
 
     void findNextVertex(ArrayList<Vertex> visitedVertices, ArrayList<Edge> visitedEdges, ArrayList<Edge> usedEdges){
@@ -146,7 +108,6 @@ public class AdjacencyGraph {
             }
 
         }
-        //}
     }
 
 
@@ -163,14 +124,14 @@ public class AdjacencyGraph {
             findShortestEdge(visitedVertex,visitedEdges, usedEdges);
         }
     }
-//364
+
     public void printMST(ArrayList<Vertex> listToPrint, ArrayList<Edge> usedEdges, int cost){
         System.out.println();
         for (int i = 0; i < listToPrint.size()-1; i++){
             System.out.println(i+1 + ") City: " + listToPrint.get(i).name + " to: " +
                     usedEdges.get(i).to+ " Distance in km: " + usedEdges.get(i).weight + "km");
         }
-        System.out.println("The final cost of the electricity grid is " + cost*100000);
+        System.out.println("The final cost of the electricity grid is " + cost+" million");
     }
 }
 
