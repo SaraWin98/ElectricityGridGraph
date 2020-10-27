@@ -8,7 +8,7 @@ public class Main {
         //We run our Prims Minimum Spanning Tree algorithm
         grid.MSTPrims();
 
-    }
+    } //Test
     //This method simply adds the cities to the grid
     public static void addCities(AdjacencyGraph grid){
         //First by initializing all the vertices - this is not completely necessary,
