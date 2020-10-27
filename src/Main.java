@@ -1,18 +1,19 @@
 public class Main {
 
     public static void main(String[] args) {
-        //We initialize the AdjacencyGraph, whereafter we use the following method to add the cities
+        //Initialize the AdjacencyGraph, and fill it.
         AdjacencyGraph grid = new AdjacencyGraph();
         addCities(grid);
-        grid.printGraph();
-        //We run our Prims Minimum Spanning Tree algorithm
-        grid.MSTPrims();
+        //We print the graph implemented in adjacency list representation.
+        //grid.printGraph();
+        //Print the minimum spanning tree of the graph starting at vertex at index 0.
+       grid.MSTPrims();
 
-    } //Test
-    //This method simply adds the cities to the grid
+    }
+    //A method to full the graph with the data for the electricity grid.
     public static void addCities(AdjacencyGraph grid){
-        //First by initializing all the vertices - this is not completely necessary,
-        // these could be initalized later, but this makes it cleaner
+        //All the vertices are initialized.
+
         Vertex Eskildstrup = new Vertex("Eskildstrup");
         Vertex Haslev = new Vertex("Haslev");
         Vertex Holbaek = new Vertex("Holbaek");
@@ -30,7 +31,7 @@ public class Main {
         Vertex Soroe = new Vertex("Soroe");
         Vertex Vordingborg = new Vertex("Vordingborg");
 
-        //The cities are now added to the grid, this is done using addVertex from the AdjacencyGraph class
+        //All the vertices are added to the Adjacency graph grid.
         grid.addVertex(Eskildstrup);
         grid.addVertex(Haslev);
         grid.addVertex(Holbaek);
@@ -48,7 +49,7 @@ public class Main {
         grid.addVertex(Soroe);
         grid.addVertex(Vordingborg);
 
-        //The connections between the cities are now added using addEdge from the AdjacencyGraph class
+        //The connections/edges between the vertices are added.
         grid.addEdge(Eskildstrup, Maribo, 28);
         grid.addEdge(Eskildstrup, NykoebingF, 13);
         grid.addEdge(Eskildstrup, Vordingborg, 24);
