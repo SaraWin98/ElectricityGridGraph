@@ -4,6 +4,7 @@ public class Main {
         AdjacencyGraph grid = new AdjacencyGraph();
         addCities(grid);
         grid.printGraph();
+        grid.MSTPrims();
 
     }
     public static void addCities(AdjacencyGraph grid){
