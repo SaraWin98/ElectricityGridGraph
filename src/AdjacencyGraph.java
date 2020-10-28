@@ -1,12 +1,12 @@
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.PriorityQueue;
 
 public class AdjacencyGraph {
     //An adjacency graph should have an ArrayList of vertices, where each vertex contains an ArrayList of all its out-edges.
     ArrayList<Vertex> vertices;
 
-    //Contructor of AdjacencyGraph object.
     public AdjacencyGraph() {
         vertices = new ArrayList<Vertex>();
     }
@@ -33,11 +33,11 @@ public class AdjacencyGraph {
     //A method to print the adjacency graph neatly. It goes to every single vertex and prints all the out-edges from this vertex.
     public void printGraph() {
         for (int i = 0; i < vertices.size(); i++) {
-            System.out.println("From vertex: " + vertices.get(i).name);
+            System.out.println("From vertex: " + vertices.get(i).getName());
             Vertex currentFrom = vertices.get(i);
-            for (int j = 0; j < currentFrom.OutEdges.size(); j++) {
-                Edge currentEdge = currentFrom.OutEdges.get(j);
-                System.out.println("To: " + currentEdge.to.name + " distance: " + currentEdge.weight);
+            for (int j = 0; j < currentFrom.getOutEdges().size(); j++) {
+                Edge currentEdge = currentFrom.getOutEdges().get(j);
+                System.out.println("To: " + currentEdge.getVertexTo().getName() + " distance: " + currentEdge.getWeight());
             }
             System.out.println();
         }
@@ -48,7 +48,8 @@ public class AdjacencyGraph {
         //Each vertex is only visited once in Prim's algorithm. Therefore all the visited vertices is added in an ArrayList
         ArrayList<Vertex> visitedVertices = new ArrayList<>();
         //visitedEdges is an ArrayList to contain all the out-edges of all the visited vertices.
-        ArrayList<Edge> visitedEdges = new ArrayList<Edge>();
+       // ArrayList<Edge> visitedEdges = new ArrayList<Edge>();
+        PriorityQueue<Edge> visitedEdges = new PriorityQueue<Edge>();
         //usedEdges is an ArrayList to contain all the out-edges that are part of the minimum spanning tree.
         ArrayList<Edge> usedEdges = new ArrayList<Edge>();
         //In this implementation the starting vertex is the vertex at index 0 of the adjacency graph.
@@ -70,19 +71,19 @@ public class AdjacencyGraph {
         // The total cost of all the used edges is found.
         totalCost = findTotalCost(usedEdges);
         tester(usedEdges);
-        //System.out.println(totalCost);
+        System.out.println();
         //Prints out the minimum spanning tree neatly·
-        printMST(visitedVertices, usedEdges, totalCost);
+        printMST(usedEdges, totalCost);
 
     }
 
     //Performs prims algorithm by finding what should be the next Vertex in visitedVertices
     //and what edge was the useful one to get there.
-    void findNextVertex(ArrayList<Vertex> visitedVertices, ArrayList<Edge> visitedEdges, ArrayList<Edge> usedEdges) {
+    void findNextVertex(ArrayList<Vertex> visitedVertices, PriorityQueue<Edge> visitedEdges, ArrayList<Edge> usedEdges) {
         //find all out-edges of all the vertices in visitedVertices and adds them to visitedEdges.
         for (Vertex vertex : visitedVertices) // goes through all vertices in visitedVertices.
         {
-            for (Edge edge : vertex.OutEdges) //goes through all edges of all vertices in visitedVertices.
+            for (Edge edge : vertex.getOutEdges()) //goes through all edges of all vertices in visitedVertices.
             {
                 if (!visitedEdges.contains(edge)) // if the edge has not already been visited, it is added to visitedEdges.
                 {
@@ -95,9 +96,9 @@ public class AdjacencyGraph {
 
         //This removes all other edges from visitedEdges that is not going to be part of the minimum spanning tree.
         for (Vertex vertex : visitedVertices) {
-            for ( Edge edge : vertex.OutEdges) {
+            for ( Edge edge : vertex.getOutEdges()) {
                 //If the to-Vertex and the from-Vertex is both in visitedVertices, then remove the Edge from visitedEdges.
-                if (visitedVertices.contains(edge.from) && visitedVertices.contains(edge.to)){
+                if (visitedVertices.contains(edge.getVertexFrom()) && visitedVertices.contains(edge.getVertexTo())){
                     visitedEdges.remove(edge);
                 }
             }
@@ -105,19 +106,18 @@ public class AdjacencyGraph {
     }
 
     //This method finds the shortest edge to a vertex we have not visited yet. This shortest edge is added to usedEdges.
-    void findShortestEdge(ArrayList<Vertex> visitedVertex, ArrayList<Edge> visitedEdges, ArrayList<Edge> usedEdges){
-        //visitedEdges is sorted in ascending order.
-        Collections.sort(visitedEdges);
+    void findShortestEdge(ArrayList<Vertex> visitedVertex, PriorityQueue<Edge> visitedEdges, ArrayList<Edge> usedEdges){
+
         //if the end Vertex of the shortest edge has not already been visited, then it is added to visitedVertex.
         //and this edge, that was chosen to get to this vertex, is added to usedEdges.
-        if (!visitedVertex.contains(visitedEdges.get(0).to)) {
-            visitedVertex.add(visitedEdges.get(0).to);
-            usedEdges.add(visitedEdges.get(0));
+        if (!visitedVertex.contains(visitedEdges.peek().to)) {
+            visitedVertex.add(visitedEdges.peek().to);
+            usedEdges.add(visitedEdges.peek());
         } else {
             //if the endpoint vertex of the shortest edge has already been visited, the shortest vertex is removed from
             //visitedEdges. Next the methods calls itself recursively, since it now will have a new shortest edge at index 0.
             //This will go on until we reach a vertex that is not already in visitedVertex.
-            visitedEdges.remove(0);
+            visitedEdges.poll();
             findShortestEdge(visitedVertex,visitedEdges, usedEdges);
         }
     }
@@ -125,7 +125,7 @@ public class AdjacencyGraph {
     //I Made this to test why we cant write <= 0.
     void tester(ArrayList<Edge> usedEdges) {
         Edge lastElement = usedEdges.get(usedEdges.size()-1);
-        for (int i = 0; usedEdges.get(i).compareTo(lastElement)== -1;i++) {
+        for (int i = 0; usedEdges.get(i).compareTo(lastElement) == -1;i++) {
             System.out.println(usedEdges.get(i));
         }
         System.out.println(lastElement);
@@ -135,89 +135,19 @@ public class AdjacencyGraph {
     int findTotalCost(ArrayList<Edge> usedEdges) {
         int cost = 0;
         for (int i = 0; usedEdges.get(i).compareTo(usedEdges.get(usedEdges.size()-1)) == -1; i++){
-            cost += usedEdges.get(i).weight;
+            cost += usedEdges.get(i).getWeight();
         }
-        cost += usedEdges.get(usedEdges.size()-1).weight;
+        cost += usedEdges.get(usedEdges.size()-1).getWeight();
         return cost;
     }
 
-//NOT DONE RIGHT
     //A method to print the minimum spanning tree as well as the total cost.
-    public void printMST(ArrayList<Vertex> listToPrint, ArrayList<Edge> usedEdges, int cost){
-        for (int i = 0; i < listToPrint.size()-1; i++){
-            System.out.println(i+1 + ") From " + listToPrint.get(i).name + " to " +
-                    usedEdges.get(i).to+ ": Distance " + usedEdges.get(i).weight + "km");
+    public void printMST(ArrayList<Edge> usedEdges, int cost){
+        for (int i = 0; i < usedEdges.size(); i++){
+            System.out.println(i+1 + ") From " + usedEdges.get(i).getVertexFrom() + " to " +
+                    usedEdges.get(i).getVertexTo()+ ": Distance " + usedEdges.get(i).getWeight() + "km");
         }
         System.out.println("The total cost of the electricity grid is " + cost+" million.");
     }
 }
 
-class Vertex implements Comparable<Vertex>{
-    String name;
-    ArrayList<Edge> OutEdges;
-    Integer distance = Integer.MAX_VALUE;
-    Vertex prev;
-
-    public Vertex(String id){
-        name=id;
-        OutEdges = new ArrayList<Edge>();
-        prev = null;
-    }
-
-    public void addOutEdge(Edge edge){
-        OutEdges.add(edge);
-    }
-
-    @Override
-    public String toString() {
-        return name;
-    }
-
-    @Override
-    public int compareTo(Vertex o) {
-        if (this.distance < o.distance)
-            return -1;
-        if (this.distance > o.distance)
-            return 1;
-        return 0;
-    }
-
-    public ArrayList<Edge> getOutEdges() {
-        return OutEdges;
-    }
-}
-
-class Edge implements Comparable<Edge> {
-    Integer weight;
-    Vertex from;
-    Vertex to;
-
-    public Edge(Vertex from, Vertex to, Integer weight) {
-        this.from = from;
-        this.to = to;
-        this.weight = weight;
-        this.from.addOutEdge(this);
-    }
-
-    @Override
-    public String toString() {
-        return "Edge{" +
-                "weight=" + weight +
-                ", from=" + from +
-                ", to=" + to +
-                '}';
-    }
-
-    @Override
-    public int compareTo(Edge o) {
-        if (this.weight < o.weight)
-            return -1;
-        if (this.weight > o.weight)
-            return 1;
-        else return 0;
-    }
-
-    public Integer getWeight() {
-        return weight;
-    }
-}
