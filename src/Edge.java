@@ -14,11 +14,9 @@ public class Edge implements Comparable<Edge> {
 
     @Override
     public String toString() {
-        return "Edge{" +
-                "weight=" + weight +
-                ", from=" + from +
-                ", to=" + to +
-                '}';
+        return "Edge from" + from +
+                " to " + to +
+                " with weight " + weight;
     }
 
     //The edges should be compared according to their weights.

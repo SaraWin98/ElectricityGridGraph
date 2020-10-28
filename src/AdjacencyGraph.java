@@ -44,42 +44,36 @@ public class AdjacencyGraph {
     public void MSTPrims() {
         //Each vertex is only visited once in Prim's algorithm. Therefore all the visited vertices is added in an ArrayList
         ArrayList<Vertex> visitedVertices = new ArrayList<>();
-        //visitedEdges is an ArrayList to contain all the out-edges of all the visited vertices.
-       // ArrayList<Edge> visitedEdges = new ArrayList<Edge>();
-        PriorityQueue<Edge> visitedEdges = new PriorityQueue<Edge>();
+        //visitedEdges is a PriorityQueue of edges to contain all the out-edges of all the visited vertices.
+        PriorityQueue<Edge> visitedEdges = new PriorityQueue<>();
         //usedEdges is an ArrayList to contain all the out-edges that are part of the minimum spanning tree.
-        ArrayList<Edge> usedEdges = new ArrayList<Edge>();
+        ArrayList<Edge> usedEdges = new ArrayList<>();
         //In this implementation the starting vertex is the vertex at index 0 of the adjacency graph.
-        //In Prim's algorithm for minimum spanning tree the starting index does not make a difference.
-        //It will return the same overall cost of the minimum spanning tree.
+        //In Prim's algorithm for minimum spanning tree the starting index does not make a big difference, because
+        //it will return the same overall cost of the minimum spanning tree.
         Vertex startingPoint = vertices.get(0);
         visitedVertices.add(startingPoint);
-        //We initialize the total cost of all the edges part of usedEdges.
-        int totalCost = 0;
 
         //until visitedVertices contains all vertices, find the next vertex to be added in visitedVertices according to Prim's algorithm.
         while (visitedVertices.size() < vertices.size()){
             findNextVertex(visitedVertices, visitedEdges, usedEdges);
         }
 
-        // The total cost of all the used edges is found.
-        totalCost = findTotalCost(usedEdges);
-        tester(usedEdges);
-        System.out.println();
         //Prints out the minimum spanning tree neatly·
-        printMST(usedEdges, totalCost);
+        printMST(usedEdges);
 
     }
 
     //Performs Prim's algorithm by finding what should be the next Vertex in visitedVertices
     //and what edge was the useful one to get there.
     void findNextVertex(ArrayList<Vertex> visitedVertices, PriorityQueue<Edge> visitedEdges, ArrayList<Edge> usedEdges) {
-        //find all out-edges of all the vertices in visitedVertices and adds them to visitedEdges.
-        for (Vertex vertex : visitedVertices) // goes through all vertices in visitedVertices.
+        //find all out-edges of all the vertices in visitedVertices and adds them to visitedEdges,
+        //where they smallest edge will be the head of the list
+        for (Vertex vertex : visitedVertices) //goes through all vertices in visitedVertices.
         {
             for (Edge edge : vertex.getOutEdges()) //goes through all edges of all vertices in visitedVertices.
             {
-                if (!visitedEdges.contains(edge)) // if the edge has not already been visited, it is added to visitedEdges.
+                if (!visitedEdges.contains(edge)) //if the edge has not already been visited, it is added to visitedEdges.
                 {
                     visitedEdges.add(edge);
                 }
@@ -101,7 +95,6 @@ public class AdjacencyGraph {
 
     //This method finds the shortest edge to a vertex we have not visited yet. This shortest edge is added to usedEdges.
     void findShortestEdge(ArrayList<Vertex> visitedVertex, PriorityQueue<Edge> visitedEdges, ArrayList<Edge> usedEdges){
-
         //if the end Vertex of the shortest edge has not already been visited, then it is added to visitedVertex.
         //and this edge, that was chosen to get to this vertex, is added to usedEdges.
         if (!visitedVertex.contains(visitedEdges.peek().to)) {
@@ -116,30 +109,23 @@ public class AdjacencyGraph {
         }
     }
 
-    //I Made this to test why we cant write <= 0.
-    void tester(ArrayList<Edge> usedEdges) {
-        for (int i = 0; i < usedEdges.size(); i++) {
-            System.out.println(usedEdges.get(i));
-        }
-    }
-
     //This method adds up the weights of all the usedEdges part of our final minimum spanning tree.
     int findTotalCost(ArrayList<Edge> usedEdges) {
         int cost = 0;
-        for (int i = 0; usedEdges.get(i).compareTo(usedEdges.get(usedEdges.size()-1)) == -1; i++){
+        for (int i = 0; i < usedEdges.size(); i++){
             cost += usedEdges.get(i).getWeight();
         }
-        cost += usedEdges.get(usedEdges.size()-1).getWeight();
         return cost;
     }
 
     //A method to print the minimum spanning tree as well as the total cost.
-    public void printMST(ArrayList<Edge> usedEdges, int cost){
+    void printMST(ArrayList<Edge> usedEdges){
         for (int i = 0; i < usedEdges.size(); i++){
             System.out.println(i+1 + ") From " + usedEdges.get(i).getVertexFrom() + " to " +
                     usedEdges.get(i).getVertexTo()+ ": Distance " + usedEdges.get(i).getWeight() + "km");
         }
-        System.out.println("The total cost of the electricity grid is " + cost+" million.");
+        int totalCost = findTotalCost(usedEdges);
+        System.out.println("The total cost of the electricity grid is " + totalCost+" million.");
     }
 }
 

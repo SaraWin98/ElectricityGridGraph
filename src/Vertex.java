@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Vertex{
     //attributes for vertex class:
-    //It contains a name, an arraylist of outedges.
+    //It contains a name, an ArrayList of out-edges.
     String name;
     ArrayList<Edge> OutEdges;
 

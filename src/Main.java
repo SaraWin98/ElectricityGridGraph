@@ -4,10 +4,10 @@ public class Main {
         //Initialize the AdjacencyGraph, and fill it.
         AdjacencyGraph grid = new AdjacencyGraph();
         addCities(grid);
-        //We print the graph implemented in adjacency list representation.
-        //grid.printGraph();
+        //Print the graph implemented in adjacency list representation.
+        grid.printGraph();
         //Print the minimum spanning tree of the graph starting at vertex at index 0.
-       grid.MSTPrims();
+        grid.MSTPrims();
 
     }
     //A method to full the graph with the data for the electricity grid.
