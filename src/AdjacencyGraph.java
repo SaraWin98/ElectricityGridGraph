@@ -1,8 +1,5 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.PriorityQueue;
-
 public class AdjacencyGraph {
     //An adjacency graph should have an ArrayList of vertices, where each vertex contains an ArrayList of all its out-edges.
     ArrayList<Vertex> vertices;
@@ -65,9 +62,6 @@ public class AdjacencyGraph {
             findNextVertex(visitedVertices, visitedEdges, usedEdges);
         }
 
-        //System.out.println(visitedVertices);
-        //System.out.println(visitedEdges);
-        //System.out.println(usedEdges);
         // The total cost of all the used edges is found.
         totalCost = findTotalCost(usedEdges);
         tester(usedEdges);
@@ -77,7 +71,7 @@ public class AdjacencyGraph {
 
     }
 
-    //Performs prims algorithm by finding what should be the next Vertex in visitedVertices
+    //Performs Prim's algorithm by finding what should be the next Vertex in visitedVertices
     //and what edge was the useful one to get there.
     void findNextVertex(ArrayList<Vertex> visitedVertices, PriorityQueue<Edge> visitedEdges, ArrayList<Edge> usedEdges) {
         //find all out-edges of all the vertices in visitedVertices and adds them to visitedEdges.
@@ -124,11 +118,9 @@ public class AdjacencyGraph {
 
     //I Made this to test why we cant write <= 0.
     void tester(ArrayList<Edge> usedEdges) {
-        Edge lastElement = usedEdges.get(usedEdges.size()-1);
-        for (int i = 0; usedEdges.get(i).compareTo(lastElement) == -1;i++) {
+        for (int i = 0; i < usedEdges.size(); i++) {
             System.out.println(usedEdges.get(i));
         }
-        System.out.println(lastElement);
     }
 
     //This method adds up the weights of all the usedEdges part of our final minimum spanning tree.
