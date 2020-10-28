@@ -66,7 +66,7 @@ public class AdjacencyGraph {
 
     //Performs Prim's algorithm by finding what should be the next Vertex in visitedVertices
     //and what edge was the useful one to get there.
-    void findNextVertex(ArrayList<Vertex> visitedVertices, PriorityQueue<Edge> visitedEdges, ArrayList<Edge> usedEdges) {
+    private void findNextVertex(ArrayList<Vertex> visitedVertices, PriorityQueue<Edge> visitedEdges, ArrayList<Edge> usedEdges) {
         //find all out-edges of all the vertices in visitedVertices and adds them to visitedEdges,
         //where they smallest edge will be the head of the list
         for (Vertex vertex : visitedVertices) //goes through all vertices in visitedVertices.
@@ -94,7 +94,7 @@ public class AdjacencyGraph {
     }
 
     //This method finds the shortest edge to a vertex we have not visited yet. This shortest edge is added to usedEdges.
-    void findShortestEdge(ArrayList<Vertex> visitedVertex, PriorityQueue<Edge> visitedEdges, ArrayList<Edge> usedEdges){
+    private void findShortestEdge(ArrayList<Vertex> visitedVertex, PriorityQueue<Edge> visitedEdges, ArrayList<Edge> usedEdges){
         //if the end Vertex of the shortest edge has not already been visited, then it is added to visitedVertex.
         //and this edge, that was chosen to get to this vertex, is added to usedEdges.
         if (!visitedVertex.contains(visitedEdges.peek().to)) {
@@ -110,7 +110,7 @@ public class AdjacencyGraph {
     }
 
     //This method adds up the weights of all the usedEdges part of our final minimum spanning tree.
-    int findTotalCost(ArrayList<Edge> usedEdges) {
+    private int findTotalCost(ArrayList<Edge> usedEdges) {
         int cost = 0;
         for (int i = 0; i < usedEdges.size(); i++){
             cost += usedEdges.get(i).getWeight();
@@ -119,7 +119,7 @@ public class AdjacencyGraph {
     }
 
     //A method to print the minimum spanning tree as well as the total cost.
-    void printMST(ArrayList<Edge> usedEdges){
+    private void printMST(ArrayList<Edge> usedEdges){
         for (int i = 0; i < usedEdges.size(); i++){
             System.out.println(i+1 + ") From " + usedEdges.get(i).getVertexFrom() + " to " +
                     usedEdges.get(i).getVertexTo()+ ": Distance " + usedEdges.get(i).getWeight() + "km");
